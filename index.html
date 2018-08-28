@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Simple Chat App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="controller" v-cloak>
+        <div class="login" v-show="! isLoggedIn">
+            <div class="header">
+                <h4>Login</h4>
+            </div>
+            <form class="login-form" @submit="login(event)">
+                <input type="text" placeholder="Type your name" v-model="userActive">
+                <button type="submit">Login</button>
+            </form>
+        </div>
+
+        <div class="wrapper" v-show="isLoggedIn">
+            <div class="header">
+                <h4>{{ headerTitle }}</h4>
+            </div>
+            <div class="user-lists">
+                <div class="user" v-for="user in users" @click="setUserTarget(user.username)" v-if="user.username != userActive" v-bind:class="{ 'active': userTarget == user.username }">
+                    <div class="user-img">
+                        <img class="profile-img" src="user.svg">
+                    </div>
+                    <div class="user-desc">
+                        <span class="user-name">{{ user.username }}</span><br>
+                        <span class="registered-date">Registered on 10:00</span>
+                    </div>
+                    <div class="notification">
+                        1
+                    </div>
+                </div>
+                
+            </div>
+            <div class="message-container">
+                <div class="chat-item" v-for="message in messages" 
+                v-if="(message.from == userTarget && message.to == userActive) || (message.to == userTarget && message.from == userActive)">
+                    <div v-bind:class="message.from == userActive ? 'me' : 'her'">{{ message.message }}</div>
+                </div>
+
+                <img class="chat-img" src="/chat.svg" v-if="userTarget == ''">
+
+                <form class="text-box" @submit="sendMessage(event)" v-show="userTarget != ''">
+                    <input type="text" v-model="messageText" placeholder="Write your message">
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/vue.min.js"></script>
+    <script src="/moment.min.js"></script>
+    <script>
+        const socket = io();
+
+        var chatApp = new Vue({
+            el: '#controller',
+            data: {
+                headerTitle: "Simple chat app",
+                isLoggedIn: false,
+                userActive: "",
+                userTarget: "",
+                messageText: "",
+                users: [],
+                messages: [],
+                messagesByUser: []
+            },
+            mounted() {
+                const _this = this;
+                
+                socket.on('add-user', (data) => {
+                    _this.users = data;
+                });
+
+                socket.on('receive-message', (data) => {
+                    _this.setMessages(data);
+                });
+            },
+            methods: {
+                login(event) {
+                    event.preventDefault();
+
+                    this.isLoggedIn = true;
+                    socket.emit('login', {username: this.userActive});
+                },
+
+                setUserTarget(username) {
+                    this.userTarget = username;
+                    this.headerTitle = username;
+                },
+
+                sendMessage(event) {
+                    event.preventDefault();
+                    var messageItem = { from: this.userActive, to: this.userTarget, message: this.messageText };
+                    socket.emit('send-message', messageItem);
+                    this.messageText = "";
+                },
+
+                setMessages(data) {
+                    this.messages.push(data);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
