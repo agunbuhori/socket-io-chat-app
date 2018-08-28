@@ -12,14 +12,12 @@ var messages = [];
 
 io.on('connection', (socket) => { 
    socket.on('login', (data) => {
-       if (users.length === 0)
-            users.push(data);
-        else
-            for (var i = 0; i < users.length; i++)
-                if (data.username != users[i].username)
-                    users.push(data);
+       users.push(data);
+       onlyUnique = (value, index, self) => {
+           return self.indexOf(value) === index;
+       }
 
-       io.sockets.emit('add-user', users);
+       io.sockets.emit('add-user', users.filter(onlyUnique));
    });
 
    socket.on('send-message', (data) => {

@@ -81,6 +81,12 @@ body {
     height: 400px;
     position: relative;
 }
+.chat-content {
+    overflow-y: scroll;
+    height: 100%;
+    padding-top: 5px;
+    padding-bottom: 60px;
+}
 .chat-item {
     padding: 5px 10px;
     width: 100%;
@@ -171,6 +177,14 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+.no-user-active {
+    text-align: center;
+    color: #666;
+    padding: 10px;
+}
+.no-user-active > h5 {
+    margin: 0;
 }
 [v-cloak] {
     display:  none;
