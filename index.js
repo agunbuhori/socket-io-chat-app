@@ -8,7 +8,6 @@ const express = require('express'),
 app.use(express.static(path.join(__dirname, 'assets')));
 
 var users = [];
-var messages = [];
 
 io.on('connection', (socket) => { 
    socket.on('login', (data) => {

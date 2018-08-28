@@ -1,4 +1,5 @@
 <h1>Simple Chat App with Socket.io + Vue</h1>
+![alt text](https://ibb.co/nm8g7p)
 
 ## Installation Steps
 To run this code, you need to install <b>node js</b> or <b>npm</b>. My assumption is the latest version.

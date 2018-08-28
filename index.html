@@ -76,8 +76,6 @@
                 messageText: "",
                 users: [],
                 messages: [],
-                messagesByUser: [],
-                notifications: []
             },
             mounted() {
                 const _this = this;
@@ -111,8 +109,8 @@
 
                 sendMessage(event) {
                     event.preventDefault();
-                    var messageItem = { from: this.userActive, to: this.userTarget, message: this.messageText };
-                    socket.emit('send-message', messageItem);
+
+                    socket.emit('send-message', { from: this.userActive, to: this.userTarget, message: this.messageText });
                     this.messageText = "";
                 },
 
