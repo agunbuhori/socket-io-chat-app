@@ -15,6 +15,7 @@ $ cd rupiah
 ```bash
 $ node index.js
 ```
+Open the web browser and go to the http://localhost:3000
 
 Enjoy !
 <a href="https://agun.buhori.com/">Agun Buhori | Impressive Developer</a>
