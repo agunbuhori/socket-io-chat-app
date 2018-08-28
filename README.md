@@ -8,7 +8,7 @@ Navigate to the terminal / cmd location to copy this project, and clone the proj
 ```bash
 $ cd {YOUR_DIRECTORY}
 $ git clone https://github.com/agunbuhori/socket-io-chat-app.git
-$ cd rupiah
+$ cd socket-io-chat-app
 ```
 
 ### 2. Run project
